@@ -65,6 +65,7 @@
         }
 
      
+        
         $.ajax({
 			url: 'registraConcursoAlias',
 			type: 'POST',
