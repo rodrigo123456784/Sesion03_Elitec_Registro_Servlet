@@ -2,6 +2,11 @@ package model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 
 import entidad.Empleados;
 import util.MySqlDBConexion;
@@ -48,5 +53,59 @@ public class EmpleadosModel {
 		
 		return salida;
 	}
-	
+	public List<Empleados> filtraEmpleados(String nombre, String apellido, String area){
+
+	    List<Empleados> lista = new ArrayList<Empleados>();
+	    Connection con = null;
+	    PreparedStatement ps = null;
+	    ResultSet rs = null;
+
+	    try {
+
+	        con = MySqlDBConexion.getConexion();
+
+	        String sql = "SELECT * FROM empleados "
+	                   + "WHERE nombre LIKE ? "
+	                   + "AND apellido LIKE ? "
+	                   + "AND area LIKE ?";
+
+	        ps = con.prepareStatement(sql);
+
+	        ps.setString(1, "%" + nombre + "%");
+	        ps.setString(2, "%" + apellido + "%");
+	        ps.setString(3, "%" + area + "%");
+
+	        System.out.println("SQL => " + ps);
+
+	        rs = ps.executeQuery();
+
+	        while (rs.next()) {
+
+	            Empleados e = new Empleados();
+
+	            e.setIdEmpleados(rs.getInt("idEmpleados"));
+	            e.setNombre(rs.getString("nombre"));
+	            e.setApellido(rs.getString("apellido"));
+	            e.setArea(rs.getString("area"));
+	            e.setFechaNacimiento(rs.getDate("fechaNacimiento").toLocalDate());
+	            e.setFechaIngreso(rs.getDate("fechaIngreso").toLocalDate());
+	            e.setCorreo(rs.getString("correo"));
+
+	            lista.add(e);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (ps != null) ps.close();
+	            if (con != null) con.close();
+	        } catch (Exception e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+
+	    return lista;
+	}
 }
