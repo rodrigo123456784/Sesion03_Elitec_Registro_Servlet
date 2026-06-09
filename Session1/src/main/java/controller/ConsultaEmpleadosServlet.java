@@ -34,6 +34,7 @@ public class ConsultaEmpleadosServlet extends HttpServlet {
 		
 		
 		
+		
 		//3
 		EmpleadosModel model = new EmpleadosModel();
 		List<Empleados> lista = model.filtraEmpleados(nombre,apellido,area);
@@ -50,6 +51,5 @@ public class ConsultaEmpleadosServlet extends HttpServlet {
 		
 	}
 
-	
 	
 }
