@@ -12,6 +12,7 @@ import util.MySqlDBConexion;
 
 public class EmpleadosModel {
 
+	
 	public int idEmpleados(Empleados obj) {
 		int salida = -1;
 		Connection cn = null;
